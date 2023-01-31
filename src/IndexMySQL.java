@@ -6,6 +6,8 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import javax.swing.text.html.parser.Entity;
+
 
 /**
  * Tests creating an index and using EXPLAIN on a MySQL database.
@@ -55,7 +57,8 @@ public class IndexMySQL
 		System.out.println("Connecting to database.");
 		// Note: Must assign connection to instance variable as well as returning it back to the caller
 		// TODO: Make a connection to the database and store connection in con variable before returning it.
-		return null;  	                       
+		con = DriverManager.getConnection(url, uid, pw);  
+		return con;	  	                       
 	}
 	
 	/**
@@ -64,7 +67,14 @@ public class IndexMySQL
 	public void close()
 	{
 		System.out.println("Closing database connection.");
-		// TODO: Close the database connection.  Catch any exception and print out if it occurs.		
+		// TODO: Close the database connection.  Catch any exception and print out if it occurs.
+		if(con != null){
+			try{
+				con.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}		
 	}
 	
 	/**
@@ -74,6 +84,14 @@ public class IndexMySQL
 	{
 		System.out.println("Dropping table bench.");
 		// TODO: Drop the table bench.  Catch any exception and print out if it occurs.	
+		try {		      
+			Statement stmt = con.createStatement();
+			String sql = "DROP TABLE IF EXISTS bench";
+			stmt.executeUpdate(sql);
+			System.out.println("Table is deleted.");   	  
+		} catch (SQLException e) {
+			System.out.println("Table doesn't exist.");
+		} 
 	}
 	
 	/**
@@ -88,7 +106,16 @@ public class IndexMySQL
 	public void create() throws SQLException
 	{
 		System.out.println("Creating table bench.");
-		// TODO: Create the table bench.			
+		// TODO: Create the table bench.
+		try{
+			Statement stmt = con.createStatement();
+			String sql_create = "CREATE TABLE bench(" + "id INT," + "val1 INT," + "val2 INT," + "str1 VARCHAR(20)" + ")";
+			stmt.executeUpdate(sql_create);
+
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
 	}
 	
 	/**
@@ -100,6 +127,8 @@ public class IndexMySQL
 	{
 		System.out.println("Inserting records.");		
 		// TODO: Insert records		
+		
+		
 	}
 	
 	/**
