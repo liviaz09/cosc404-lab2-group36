@@ -5,6 +5,10 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.text.html.parser.Entity;
 
 
 /**
@@ -55,7 +59,8 @@ public class IndexMySQL
 		System.out.println("Connecting to database.");
 		// Note: Must assign connection to instance variable as well as returning it back to the caller
 		// TODO: Make a connection to the database and store connection in con variable before returning it.
-		return null;  	                       
+		con = DriverManager.getConnection(url, uid, pw);  
+		return con;	  	                       
 	}
 	
 	/**
@@ -64,7 +69,14 @@ public class IndexMySQL
 	public void close()
 	{
 		System.out.println("Closing database connection.");
-		// TODO: Close the database connection.  Catch any exception and print out if it occurs.		
+		// TODO: Close the database connection.  Catch any exception and print out if it occurs.
+		if(con != null){
+			try{
+				con.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}		
 	}
 	
 	/**
@@ -74,6 +86,14 @@ public class IndexMySQL
 	{
 		System.out.println("Dropping table bench.");
 		// TODO: Drop the table bench.  Catch any exception and print out if it occurs.	
+		try {		      
+			Statement stmt = con.createStatement();
+			String sql = "DROP TABLE IF EXISTS bench";
+			stmt.executeUpdate(sql);
+			System.out.println("Table is deleted.");   	  
+		} catch (SQLException e) {
+			System.out.println("Table doesn't exist.");
+		} 
 	}
 	
 	/**
@@ -88,7 +108,16 @@ public class IndexMySQL
 	public void create() throws SQLException
 	{
 		System.out.println("Creating table bench.");
-		// TODO: Create the table bench.			
+		// TODO: Create the table bench.
+		try{
+			Statement stmt = con.createStatement();
+			String sql_create = "CREATE TABLE bench(" + "id INT," + "val1 INT," + "val2 INT," + "str1 VARCHAR(20)" + ")";
+			stmt.executeUpdate(sql_create);
+
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
 	}
 	
 	/**
@@ -100,6 +129,24 @@ public class IndexMySQL
 	{
 		System.out.println("Inserting records.");		
 		// TODO: Insert records		
+		
+		try{
+
+			String sql_insert = "INSERT INTO bench(" + "id," + "val1," + "val2," + "str1," + ") VALUES(" + "?, ?, ?, ?)";
+			PreparedStatement pstmt = con.prepareStatement(sql_insert);
+
+			for(int i = 1; i < numRecords+1; i++){
+				pstmt.setInt(1, i);
+				pstmt.setInt(2, i+1);
+				pstmt.setInt(3, (i+1) % 10);
+				pstmt.setString(4, "Test" + (i+1));
+				pstmt.addBatch();
+			}
+			pstmt.executeBatch();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
