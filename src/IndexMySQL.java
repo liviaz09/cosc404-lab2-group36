@@ -54,7 +54,7 @@ public class IndexMySQL
 	 */
 	public Connection connect() throws SQLException
 	{
-		String url = "jdbc:mysql://localhost/lab2";
+		String url = "jdbc:mysql://localhost:3307/lab2";
 		String uid = "testuser";
 		String pw = "404testpw";
 		
@@ -132,27 +132,22 @@ public class IndexMySQL
 		System.out.println("Inserting records.");		
 		// TODO: Insert records		
 		
-<<<<<<< HEAD
 		try{
 
 			String sql_insert = "INSERT INTO bench(" + "id," + "val1," + "val2," + "str1," + ") VALUES(" + "?, ?, ?, ?)";
 			PreparedStatement pstmt = con.prepareStatement(sql_insert);
 
-			for(int i = 1; i < numRecords+1; i++){
+			for(int i = 0; i < numRecords+1; i++){
 				pstmt.setInt(1, i);
 				pstmt.setInt(2, i+1);
 				pstmt.setInt(3, (i+1) % 10);
-				pstmt.setString(4, "Test" + (i+1));
-				pstmt.addBatch();
+				pstmt.setString(4, "Test" + i );
 			}
 			pstmt.executeBatch();
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-=======
-		
->>>>>>> 35a814d6f19553daab4236e8c7bd017dbf11d2f3
 	}
 	
 	/**
