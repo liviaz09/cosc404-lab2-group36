@@ -5,13 +5,8 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.text.html.parser.Entity;
-
-import javax.swing.text.html.parser.Entity;
-
 
 /**
  * Tests creating an index and using EXPLAIN on a MySQL database.
@@ -133,7 +128,6 @@ public class IndexMySQL
 		// TODO: Insert records		
 		
 		try{
-
 			String sql_insert = "INSERT INTO bench(" + "id," + "val1," + "val2," + "str1," + ") VALUES(" + "?, ?, ?, ?)";
 			PreparedStatement pstmt = con.prepareStatement(sql_insert);
 
