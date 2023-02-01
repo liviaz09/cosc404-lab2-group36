@@ -10,6 +10,8 @@ import java.util.List;
 
 import javax.swing.text.html.parser.Entity;
 
+import javax.swing.text.html.parser.Entity;
+
 
 /**
  * Tests creating an index and using EXPLAIN on a MySQL database.
@@ -130,6 +132,7 @@ public class IndexMySQL
 		System.out.println("Inserting records.");		
 		// TODO: Insert records		
 		
+<<<<<<< HEAD
 		try{
 
 			String sql_insert = "INSERT INTO bench(" + "id," + "val1," + "val2," + "str1," + ") VALUES(" + "?, ?, ?, ?)";
@@ -147,6 +150,9 @@ public class IndexMySQL
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+=======
+		
+>>>>>>> 35a814d6f19553daab4236e8c7bd017dbf11d2f3
 	}
 	
 	/**
