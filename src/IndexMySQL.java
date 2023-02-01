@@ -108,7 +108,7 @@ public class IndexMySQL
 		// TODO: Create the table bench.
 		try{
 			Statement stmt = con.createStatement();
-			String sql_create = "CREATE TABLE bench(" + "id INT," + "val1 INT," + "val2 INT," + "str1 VARCHAR(20)" + ")";
+			String sql_create = "CREATE TABLE bench(" + "id INT PRIMARY KEY AUTO_INCREMENT," + "val1 INT," + "val2 INT," + "str1 VARCHAR(20)" + ")";
 			stmt.executeUpdate(sql_create);
 
 			
@@ -128,14 +128,14 @@ public class IndexMySQL
 		// TODO: Insert records		
 		
 		try{
-			String sql_insert = "INSERT INTO bench(" + "id," + "val1," + "val2," + "str1," + ") VALUES(" + "?, ?, ?, ?)";
+			String sql_insert = "INSERT INTO bench(" + "val1," + "val2," + "str1" + ") VALUES(" + "?, ?, ?)";
 			PreparedStatement pstmt = con.prepareStatement(sql_insert);
 
-			for(int i = 0; i < numRecords+1; i++){
+			for(int i = 1; i < numRecords+1; i++){
 				pstmt.setInt(1, i);
-				pstmt.setInt(2, i+1);
-				pstmt.setInt(3, (i+1) % 10);
-				pstmt.setString(4, "Test" + i );
+				pstmt.setInt(2, i % 10);
+				pstmt.setString(3, "Test" + i);
+				pstmt.addBatch();
 			}
 			pstmt.executeBatch();
 
