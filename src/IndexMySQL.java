@@ -131,10 +131,10 @@ public class IndexMySQL
 			String sql_insert = "INSERT INTO bench(" + "val1," + "val2," + "str1" + ") VALUES(" + "?, ?, ?)";
 			PreparedStatement pstmt = con.prepareStatement(sql_insert);
 
-			for(int i = 1; i < numRecords+1; i++){
+			for(int i = 1; i <= numRecords; i++){
 				pstmt.setInt(1, i);
 				pstmt.setInt(2, i % 10);
-				pstmt.setString(3, "Test" + i);
+				pstmt.setString(3, "Test" + i );
 				pstmt.addBatch();
 			}
 			pstmt.executeBatch();
@@ -155,10 +155,22 @@ public class IndexMySQL
 	public ResultSet addindex1() throws SQLException
 	{
 		System.out.println("Building index #1.");
+		ResultSet r1= null ;
 		// TODO: Create index
-		
+		try{
+			
+			Statement stmt1 = con.createStatement();
+			stmt1.executeUpdate( "CREATE UNIQUE INDEX idxBenchVal1 ON bench (val1);");
+			PreparedStatement pst = con.prepareStatement("EXPLAIN SELECT * FROM bench WHERE val1 = 500 ");
+			r1 = pst.executeQuery();
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
 		// TODO: Do explain with query: SELECT * FROM bench WHERE val1 = 500
-		return null;	
+
+
+		return r1;	
 	}
 	
 	/**
@@ -173,9 +185,22 @@ public class IndexMySQL
 	{
 		System.out.println("Building index #2.");
 		// TODO: Create index
+		ResultSet r1= null ;
+		// TODO: Create index
 		
 		// TODO: Do explain with query: SELECT * FROM bench WHERE val2 = 0 and val1 > 100;
-		return null;	
+		try{
+			
+			Statement stmt1 = con.createStatement();
+			stmt1.executeUpdate( "CREATE UNIQUE INDEX idxBenchVal2Val1 ON bench (val2,val1);");
+			PreparedStatement pst = con.prepareStatement("EXPLAIN SELECT * FROM bench WHERE val2 = 0 AND val1 > 100 ");
+			r1 = pst.executeQuery();
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		return r1;		
+		// TODO: Do explain with query: SELECT * FROM bench WHERE val2 = 0 and val1 > 100;	
 	}
 	
 	
